@@ -1,0 +1,29 @@
+## .NET / Visual Studio standard gitignore
+
+# Build results
+bin/
+obj/
+
+# Visual Studio cache
+.vs/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# NuGet packages
+packages/
+*.nupkg
+
+# OS files
+.DS_Store
+Thumbs.db
