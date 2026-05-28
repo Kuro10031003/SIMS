@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>SIMS Login</h2>
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">@ViewBag.Error</p>
+}
+
+<form method="post" asp-action="Login">
+    <div>
+        <label>Username</label>
+        <input type="text" name="username" required />
+    </div>
+    <div style="margin-top:10px;">
+        <label>Password</label>
+        <input type="password" name="password" required />
+    </div>
+    <button type="submit" style="margin-top:10px;">Log in</button>
+</form>
