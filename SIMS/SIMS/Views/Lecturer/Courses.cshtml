@@ -4,6 +4,11 @@
     Layout = "_Layout";
 }
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success"><i class="bi bi-check-circle"></i> @TempData["Message"]</div>
+}
+
 <div class="mb-4">
     <h2><i class="bi bi-journal-bookmark"></i> My Courses</h2>
     <p class="text-muted">Courses you are teaching</p>
@@ -37,6 +42,7 @@
                             <td>@c.Semester</td>
                             <td>
                                 <a href="/Lecturer/CourseStudents/@c.CourseID" class="btn btn-sm btn-outline-primary">View Students</a>
+                                <a href="/Lecturer/TakeAttendance/@c.CourseID" class="btn btn-sm btn-outline-success">Take Attendance</a>
                             </td>
                         </tr>
                     }

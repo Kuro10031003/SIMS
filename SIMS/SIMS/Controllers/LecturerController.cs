@@ -66,5 +66,50 @@ namespace SIMS.Controllers
             ViewBag.CourseCode = course.CourseCode;
             return View(students);
         }
+
+        // 考勤 - 显示某门课的学生，让讲师标记（GET）
+        public IActionResult TakeAttendance(int id)
+        {
+            var lecturer = GetCurrentLecturer();
+            if (lecturer == null) return Content("Lecturer profile not found.");
+
+            var course = _db.Courses.FirstOrDefault(c => c.CourseID == id && c.LecturerID == lecturer.LecturerID);
+            if (course == null) return Content("Course not found or not yours.");
+
+            var enrolments = _db.Enrolments.Where(e => e.CourseID == id).ToList();
+            var studentIds = enrolments.Select(e => e.StudentID).ToList();
+            var students = _db.Students.Where(s => studentIds.Contains(s.StudentID)).ToList();
+
+            ViewBag.CourseID = course.CourseID;
+            ViewBag.CourseName = course.CourseName;
+            ViewBag.CourseCode = course.CourseCode;
+            return View(students);
+        }
+
+        // 考勤 - 保存标记（POST）
+        [HttpPost]
+        public IActionResult TakeAttendance(int courseId, DateTime attDate, int[] studentId, string[] status)
+        {
+            var lecturer = GetCurrentLecturer();
+            if (lecturer == null) return Content("Lecturer profile not found.");
+
+            // 逐个学生保存考勤记录
+            for (int i = 0; i < studentId.Length; i++)
+            {
+                var attendance = new Attendance
+                {
+                    StudentID = studentId[i],
+                    CourseID = courseId,
+                    AttDate = attDate,
+                    Status = status[i],
+                    RecordedBy = lecturer.LecturerID
+                };
+                _db.Attendances.Add(attendance);
+            }
+            _db.SaveChanges();
+
+            TempData["Message"] = "Attendance recorded successfully!";
+            return RedirectToAction("Courses");
+        }
     }
 }

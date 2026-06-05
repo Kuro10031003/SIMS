@@ -1,0 +1,60 @@
+﻿@model List<SIMS.Models.Student>
+@{
+    ViewData["Title"] = "Take Attendance";
+    Layout = "_Layout";
+}
+
+<div class="mb-4">
+    <h2><i class="bi bi-clipboard-check"></i> Take Attendance - @ViewBag.CourseCode</h2>
+    <p class="text-muted">@ViewBag.CourseName</p>
+    <a href="/Lecturer/Courses" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-left"></i> Back to My Courses</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.Count == 0)
+        {
+            <p class="text-muted text-center">No students enrolled in this course.</p>
+        }
+        else
+        {
+            <form method="post" asp-action="TakeAttendance">
+                <input type="hidden" name="courseId" value="@ViewBag.CourseID" />
+
+                <div class="mb-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="attDate" class="form-control" style="max-width:250px;" required value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @s.FullName
+                                    <input type="hidden" name="studentId" value="@s.StudentID" />
+                                </td>
+                                <td>
+                                    <select name="status" class="form-select" style="max-width:200px;">
+                                        <option value="Present">Present</option>
+                                        <option value="Absent">Absent</option>
+                                        <option value="Late">Late</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Attendance</button>
+            </form>
+        }
+    </div>
+</div>
