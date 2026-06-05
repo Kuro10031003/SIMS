@@ -7,91 +7,352 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+            :root {
+                --primary: #0052ff;
+                --primary-active: #003ecc;
+                --ink: #0a0b0d;
+                --body: #5b616e;
+                --muted: #7c828a;
+                --hairline: #dee1e6;
+                --hairline-soft: #eef0f3;
+                --canvas: #ffffff;
+                --surface-soft: #f7f7f7;
+                --surface-strong: #eef0f3;
+                --up: #05b169;
+                --down: #cf202f;
+            }
+
+            * {
+                font-family: 'Inter', -apple-system, system-ui, 'Segoe UI', sans-serif;
+            }
+
             body {
-                background-color: #f8f9fa;
+                background: var(--surface-soft);
+                margin: 0;
+                color: var(--ink);
+                font-size: 16px;
+                line-height: 1.5;
+                letter-spacing: -0.01em;
+            }
+
+            .layout {
+                display: flex;
                 min-height: 100vh;
+            }
+
+            /* 侧边栏 - 白底发丝边框 */
+            .sidebar {
+                width: 256px;
+                background: var(--canvas);
+                border-right: 1px solid var(--hairline);
                 display: flex;
                 flex-direction: column;
+                position: fixed;
+                height: 100vh;
+                padding: 24px 0;
             }
-            .navbar-brand { font-weight: 700; letter-spacing: 1px; }
-            .content-wrapper { flex: 1; padding: 2rem 0; }
-            .footer {
-                background-color: #fff;
-                border-top: 1px solid #dee2e6;
-                padding: 1rem 0;
-                text-align: center;
-                color: #6c757d;
-                font-size: 0.9rem;
+
+            .sidebar-brand {
+                font-size: 22px;
+                font-weight: 600;
+                color: var(--ink);
+                padding: 0 24px 24px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
+
+                .sidebar-brand i {
+                    color: var(--primary);
+                }
+
+            .sidebar-nav a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 24px;
+                color: var(--body);
+                text-decoration: none;
+                font-size: 15px;
+                font-weight: 500;
+                border-left: 3px solid transparent;
+                transition: all 0.15s;
+            }
+
+                .sidebar-nav a:hover {
+                    background: var(--surface-soft);
+                    color: var(--ink);
+                    border-left-color: var(--primary);
+                }
+
+                .sidebar-nav a i {
+                    font-size: 18px;
+                }
+
+            .sidebar-user {
+                margin-top: auto;
+                padding: 16px 24px 0;
+                border-top: 1px solid var(--hairline);
+                font-size: 14px;
+                color: var(--body);
+            }
+
+                .sidebar-user .logout {
+                    color: var(--down);
+                    text-decoration: none;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    margin-top: 8px;
+                    font-weight: 500;
+                }
+
+            /* 主区 - 宽松留白 */
+            .main {
+                margin-left: 256px;
+                flex: 1;
+                padding: 48px 56px;
+                max-width: 1200px;
+            }
+
+            h2 {
+                font-weight: 600;
+                font-size: 32px;
+                letter-spacing: -0.4px;
+                margin-bottom: 4px;
+            }
+
+            .text-muted {
+                color: var(--muted) !important;
+            }
+
+            /* 卡片 - 大圆角发丝边框单层阴影 */
             .card {
-                border: none;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                border-radius: 0.5rem;
+                background: var(--canvas);
+                border: 1px solid var(--hairline);
+                border-radius: 16px;
+                box-shadow: none;
+                margin-bottom: 24px;
             }
-            .stat-card { transition: transform 0.2s; }
-            .stat-card:hover { transform: translateY(-3px); }
+
+            .card-body {
+                padding: 32px;
+            }
+
+            .stat-card {
+                transition: box-shadow 0.15s;
+            }
+
+                .stat-card:hover {
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+                }
+
+            /* 表格 */
+            .table {
+                font-size: 15px;
+            }
+
+                .table thead th {
+                    border-bottom: 1px solid var(--hairline);
+                    color: var(--muted);
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    font-weight: 600;
+                    letter-spacing: 0.5px;
+                    padding: 14px 12px;
+                }
+
+                .table tbody td {
+                    padding: 16px 12px;
+                    vertical-align: middle;
+                    border-color: var(--hairline-soft);
+                }
+
+            .table-hover tbody tr:hover {
+                background: var(--surface-soft);
+            }
+
+            .table-striped tbody tr:nth-of-type(odd) {
+                background: transparent;
+            }
+
+            /* 药丸按钮 */
+            .btn {
+                border-radius: 100px;
+                font-weight: 600;
+                font-size: 15px;
+                padding: 10px 20px;
+            }
+
+            .btn-sm {
+                padding: 6px 16px;
+                font-size: 13px;
+            }
+
+            .btn-primary {
+                background: var(--primary);
+                border-color: var(--primary);
+            }
+
+                .btn-primary:hover, .btn-primary:active {
+                    background: var(--primary-active) !important;
+                    border-color: var(--primary-active) !important;
+                }
+
+            .btn-secondary {
+                background: var(--surface-strong);
+                border-color: var(--surface-strong);
+                color: var(--ink);
+            }
+
+                .btn-secondary:hover {
+                    background: var(--hairline);
+                    color: var(--ink);
+                }
+
+            .btn-success {
+                background: var(--up);
+                border-color: var(--up);
+            }
+
+            .btn-danger, .btn-outline-danger {
+                color: var(--down);
+            }
+
+            .btn-outline-primary {
+                color: var(--primary);
+                border-color: var(--hairline);
+            }
+
+                .btn-outline-primary:hover {
+                    background: var(--primary);
+                    border-color: var(--primary);
+                }
+
+            .btn-outline-success {
+                color: var(--up);
+                border-color: var(--hairline);
+            }
+
+            .btn-outline-warning, .btn-outline-info {
+                border-color: var(--hairline);
+            }
+
+            .btn-info {
+                background: var(--ink);
+                border-color: var(--ink);
+                color: #fff;
+            }
+
+            /* 表单 */
+            .form-control, .form-select {
+                border: 1px solid var(--hairline);
+                border-radius: 12px;
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+
+                .form-control:focus, .form-select:focus {
+                    border-color: var(--primary);
+                    box-shadow: 0 0 0 1px var(--primary);
+                }
+
+            .form-label {
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+
+            /* 徽章 - 药丸 */
+            .badge {
+                border-radius: 100px;
+                font-weight: 600;
+                padding: 5px 12px;
+                font-size: 12px;
+            }
+
+                .badge.bg-success {
+                    background: var(--up) !important;
+                }
+
+                .badge.bg-danger {
+                    background: var(--down) !important;
+                }
+
+                .badge.bg-secondary {
+                    background: var(--surface-strong) !important;
+                    color: var(--body) !important;
+                }
+
+                .badge.bg-primary {
+                    background: var(--primary) !important;
+                }
+
+                .badge.bg-info {
+                    background: var(--surface-strong) !important;
+                    color: var(--ink) !important;
+                }
+
+                .badge.bg-warning {
+                    background: var(--accent, #f4b000) !important;
+                    color: #fff !important;
+                }
+
+            .alert-success {
+                background: #e6f7ef;
+                border: 1px solid #b3e6cf;
+                color: #047a4a;
+                border-radius: 12px;
+            }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="/"><i class="bi bi-mortarboard-fill"></i> SIMS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav me-auto">
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    <div class="layout">
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <aside class="sidebar">
+                <div class="sidebar-brand"><i class="bi bi-mortarboard-fill"></i> SIMS</div>
+                <nav class="sidebar-nav">
+                    @if (User.IsInRole("Admin"))
                     {
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item"><a class="nav-link" href="/Admin/Index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Programmes/Index"><i class="bi bi-book"></i> Programmes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Courses/Index"><i class="bi bi-journal-bookmark"></i> Courses</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Users/Index"><i class="bi bi-people"></i> Users</a></li>
-                        }
-                        else if (User.IsInRole("Lecturer"))
-                        {
-                            <li class="nav-item"><a class="nav-link" href="/Lecturer/Index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Lecturer/Courses"><i class="bi bi-journal-bookmark"></i> My Courses</a></li>
-                        }
-                        else if (User.IsInRole("Student"))
-                        {
-                            <li class="nav-item"><a class="nav-link" href="/Student/Index"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Student/Courses"><i class="bi bi-journal-bookmark"></i> Courses</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Student/Attendance"><i class="bi bi-clipboard-check"></i> Attendance</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/Student/Grades"><i class="bi bi-award"></i> Grades</a></li>
-                        }
+                        <a href="/Admin/Index"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                        <a href="/Programmes/Index"><i class="bi bi-book"></i> Programmes</a>
+                        <a href="/Courses/Index"><i class="bi bi-journal-bookmark"></i> Courses</a>
+                        <a href="/Users/Index"><i class="bi bi-people"></i> Users</a>
                     }
-                </ul>
-                <ul class="navbar-nav">
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    else if (User.IsInRole("Lecturer"))
                     {
-                        <li class="nav-item">
-                            <span class="nav-link"><i class="bi bi-person-circle"></i> @User.Identity.Name</span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Account/Logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
-                        </li>
+                        <a href="/Lecturer/Index"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                        <a href="/Lecturer/Courses"><i class="bi bi-journal-bookmark"></i> My Courses</a>
                     }
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="content-wrapper">
-        <div class="container">
-            @RenderBody()
-        </div>
+                    else if (User.IsInRole("Student"))
+                    {
+                        <a href="/Student/Index"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                        <a href="/Student/Courses"><i class="bi bi-journal-bookmark"></i> Courses</a>
+                        <a href="/Student/Attendance"><i class="bi bi-clipboard-check"></i> Attendance</a>
+                        <a href="/Student/Grades"><i class="bi bi-award"></i> Grades</a>
+                    }
+                </nav>
+                <div class="sidebar-user">
+                    <div><i class="bi bi-person-circle"></i> @User.Identity.Name</div>
+                    <a class="logout" href="/Account/Logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </div>
+            </aside>
+            <main class="main">
+                @RenderBody()
+            </main>
+        }
+        else
+        {
+            <main style="width:100%; padding:0;">
+                @RenderBody()
+            </main>
+        }
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            &copy; 2026 - SIMS · Student Information Management System
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
