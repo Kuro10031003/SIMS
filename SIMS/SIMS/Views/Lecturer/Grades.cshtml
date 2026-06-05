@@ -1,0 +1,57 @@
+﻿@model List<SIMS.Models.Grade>
+@{
+    ViewData["Title"] = "Course Grades";
+    Layout = "_Layout";
+    var students = ViewBag.Students as List<SIMS.Models.Student>;
+}
+
+<div class="mb-4">
+    <h2><i class="bi bi-award"></i> Grades - @ViewBag.CourseCode</h2>
+    <a href="/Lecturer/Courses" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+    <a href="/Lecturer/PublishGrades/@ViewBag.CourseID" class="btn btn-sm btn-success"><i class="bi bi-send"></i> Publish All Grades</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Assessment</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="5" class="text-center text-muted">No grades entered yet.</td></tr>
+                }
+                else
+                {
+                    @foreach (var g in Model)
+                    {
+                        var studentName = students?.FirstOrDefault(s => s.StudentID == g.StudentID)?.FullName ?? "Unknown";
+                        <tr>
+                            <td>@studentName</td>
+                            <td>@g.AssessType</td>
+                            <td>@g.Marks / @g.MaxMarks</td>
+                            <td><span class="badge bg-info">@g.GradeLetter</span></td>
+                            <td>
+                                @if (g.Published)
+                                {
+                                    <span class="badge bg-success">Published</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Draft</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

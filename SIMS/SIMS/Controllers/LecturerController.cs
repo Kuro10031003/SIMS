@@ -111,5 +111,87 @@ namespace SIMS.Controllers
             TempData["Message"] = "Attendance recorded successfully!";
             return RedirectToAction("Courses");
         }
+
+        // 录入成绩 - 显示学生（GET）
+        public IActionResult EnterGrades(int id)
+        {
+            var lecturer = GetCurrentLecturer();
+            if (lecturer == null) return Content("Lecturer profile not found.");
+
+            var course = _db.Courses.FirstOrDefault(c => c.CourseID == id && c.LecturerID == lecturer.LecturerID);
+            if (course == null) return Content("Course not found or not yours.");
+
+            var enrolments = _db.Enrolments.Where(e => e.CourseID == id).ToList();
+            var studentIds = enrolments.Select(e => e.StudentID).ToList();
+            var students = _db.Students.Where(s => studentIds.Contains(s.StudentID)).ToList();
+
+            ViewBag.CourseID = course.CourseID;
+            ViewBag.CourseName = course.CourseName;
+            ViewBag.CourseCode = course.CourseCode;
+            return View(students);
+        }
+
+        // 录入成绩 - 保存（POST）
+        [HttpPost]
+        public IActionResult EnterGrades(int courseId, string assessType, int[] studentId, decimal[] marks, decimal maxMarks)
+        {
+            for (int i = 0; i < studentId.Length; i++)
+            {
+                var grade = new Grade
+                {
+                    StudentID = studentId[i],
+                    CourseID = courseId,
+                    AssessType = assessType,
+                    Marks = marks[i],
+                    MaxMarks = maxMarks,
+                    GradeLetter = CalculateGrade(marks[i], maxMarks),
+                    Published = false   // 默认不发布，要另外点发布
+                };
+                _db.Grades.Add(grade);
+            }
+            _db.SaveChanges();
+
+            TempData["Message"] = "Grades saved! Remember to publish them so students can see.";
+            return RedirectToAction("Courses");
+        }
+
+        // 辅助方法：根据分数算等级
+        private string CalculateGrade(decimal marks, decimal max)
+        {
+            decimal pct = (marks / max) * 100;
+            if (pct >= 80) return "A";
+            if (pct >= 70) return "B";
+            if (pct >= 60) return "C";
+            if (pct >= 50) return "D";
+            return "F";
+        }
+
+        // 查看 + 发布某门课的成绩
+        public IActionResult Grades(int id)
+        {
+            var lecturer = GetCurrentLecturer();
+            if (lecturer == null) return Content("Lecturer profile not found.");
+
+            var course = _db.Courses.FirstOrDefault(c => c.CourseID == id && c.LecturerID == lecturer.LecturerID);
+            if (course == null) return Content("Course not found or not yours.");
+
+            var grades = _db.Grades.Where(g => g.CourseID == id).ToList();
+            ViewBag.CourseID = course.CourseID;
+            ViewBag.CourseCode = course.CourseCode;
+            ViewBag.Students = _db.Students.ToList();   // 用来显示学生名字
+            return View(grades);
+        }
+
+        // 发布某门课的所有成绩
+        public IActionResult PublishGrades(int id)
+        {
+            var grades = _db.Grades.Where(g => g.CourseID == id).ToList();
+            foreach (var g in grades)
+                g.Published = true;
+            _db.SaveChanges();
+
+            TempData["Message"] = "Grades published! Students can now see them.";
+            return RedirectToAction("Grades", new { id = id });
+        }
     }
 }

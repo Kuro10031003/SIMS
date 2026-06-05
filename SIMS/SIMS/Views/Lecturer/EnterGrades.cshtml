@@ -1,0 +1,58 @@
+﻿@model List<SIMS.Models.Student>
+@{
+    ViewData["Title"] = "Enter Grades";
+    Layout = "_Layout";
+}
+
+<div class="mb-4">
+    <h2><i class="bi bi-award"></i> Enter Grades - @ViewBag.CourseCode</h2>
+    <p class="text-muted">@ViewBag.CourseName</p>
+    <a href="/Lecturer/Courses" class="btn btn-sm btn-secondary"><i class="bi bi-arrow-left"></i> Back to My Courses</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        @if (Model.Count == 0)
+        {
+            <p class="text-muted text-center">No students enrolled.</p>
+        }
+        else
+        {
+            <form method="post" asp-action="EnterGrades">
+                <input type="hidden" name="courseId" value="@ViewBag.CourseID" />
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Assessment Type</label>
+                        <input name="assessType" class="form-control" required placeholder="e.g. Final Exam" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Max Marks</label>
+                        <input name="maxMarks" type="number" step="0.01" class="form-control" required value="100" />
+                    </div>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>Student</th><th>Marks</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @s.FullName
+                                    <input type="hidden" name="studentId" value="@s.StudentID" />
+                                </td>
+                                <td>
+                                    <input name="marks" type="number" step="0.01" class="form-control" style="max-width:150px;" required />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Grades</button>
+            </form>
+        }
+    </div>
+</div>
