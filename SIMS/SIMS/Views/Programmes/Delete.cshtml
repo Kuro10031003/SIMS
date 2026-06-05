@@ -1,0 +1,28 @@
+﻿@model SIMS.Models.Programme
+@{
+    ViewData["Title"] = "Delete Programme";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-body p-4">
+                <h3 class="mb-3 text-danger"><i class="bi bi-exclamation-triangle"></i> Delete Programme</h3>
+                <p>Are you sure you want to delete this programme?</p>
+
+                <table class="table">
+                    <tr><th>Code</th><td>@Model.ProgrammeCode</td></tr>
+                    <tr><th>Name</th><td>@Model.ProgrammeName</td></tr>
+                    <tr><th>Duration</th><td>@Model.DurationYears years</td></tr>
+                </table>
+
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" name="id" value="@Model.ProgrammeID" />
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Yes, Delete</button>
+                    <a href="/Programmes/Index" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

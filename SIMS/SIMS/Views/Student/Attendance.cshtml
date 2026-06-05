@@ -1,0 +1,46 @@
+﻿@model List<SIMS.Models.Attendance>
+@{
+    ViewData["Title"] = "My Attendance";
+    Layout = "_Layout";
+    var courses = ViewBag.Courses as List<SIMS.Models.Course>;
+}
+<div class="mb-4"><h2><i class="bi bi-clipboard-check"></i> My Attendance</h2></div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead><tr><th>Course</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="3" class="text-center text-muted">No attendance records yet.</td></tr>
+                }
+                else
+                {
+                    @foreach (var a in Model)
+                    {
+                        var cName = courses?.FirstOrDefault(c => c.CourseID == a.CourseID)?.CourseCode ?? "?";
+                        <tr>
+                            <td>@cName</td>
+                            <td>@a.AttDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                @if (a.Status == "Present")
+                                {
+                                    <span class="badge bg-success">Present</span>
+                                }
+                                else if (a.Status == "Late")
+                                {
+
+                                    <span class="badge bg-warning">Late</span>
+                                }
+                                else
+                                {
+
+                                    <span class="badge bg-danger">Absent</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div></div>

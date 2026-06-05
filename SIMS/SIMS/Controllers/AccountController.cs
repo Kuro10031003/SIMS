@@ -63,5 +63,14 @@ namespace SIMS.Controllers
         }
 
         public IActionResult AccessDenied() => View();
+
+        // TEMPORARY - for development/testing. DELETE before final submission.
+        public IActionResult SeedPasswords()
+        {
+            foreach (var u in _db.Users)
+                u.PasswordHash = _hasher.HashPassword(u, "Pass123!");
+            _db.SaveChanges();
+            return Content("Done. All test users password = Pass123!");
+        }
     }
 }

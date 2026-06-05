@@ -1,0 +1,35 @@
+﻿@model List<SIMS.Models.Grade>
+@{
+    ViewData["Title"] = "My Grades";
+    Layout = "_Layout";
+    var courses = ViewBag.Courses as List<SIMS.Models.Course>;
+}
+<div class="mb-4">
+    <h2><i class="bi bi-award"></i> My Grades</h2>
+    <p class="text-muted">Only published grades are shown</p>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead><tr><th>Course</th><th>Assessment</th><th>Marks</th><th>Grade</th></tr></thead>
+            <tbody>
+                @if (Model.Count == 0)
+                {
+                    <tr><td colspan="4" class="text-center text-muted">No published grades yet.</td></tr>
+                }
+                else
+                {
+                    @foreach (var g in Model)
+                    {
+                        var cName = courses?.FirstOrDefault(c => c.CourseID == g.CourseID)?.CourseCode ?? "?";
+                        <tr>
+                            <td>@cName</td>
+                            <td>@g.AssessType</td>
+                            <td>@g.Marks / @g.MaxMarks</td>
+                            <td><span class="badge bg-info">@g.GradeLetter</span></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div></div>
