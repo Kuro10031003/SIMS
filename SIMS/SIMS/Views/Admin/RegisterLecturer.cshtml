@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Register Lecturer";
+    Layout = "_Layout";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h3 class="mb-4"><i class="bi bi-person-badge"></i> Register New Lecturer</h3>
+                <form method="post" asp-action="RegisterLecturer">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input name="fullName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Username (for login)</label>
+                        <input name="username" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input name="email" type="email" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input name="password" type="password" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Department (optional)</label>
+                        <input name="department" class="form-control" placeholder="e.g. Computing" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone (optional)</label>
+                        <input name="phone" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Register</button>
+                    <a href="/Admin/Index" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

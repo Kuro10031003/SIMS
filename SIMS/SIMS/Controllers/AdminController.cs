@@ -62,5 +62,43 @@ namespace SIMS.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // REGISTER LECTURER - GET
+        public IActionResult RegisterLecturer()
+        {
+            return View();
+        }
+
+        // REGISTER LECTURER - POST
+        [HttpPost]
+        public IActionResult RegisterLecturer(string username, string email, string password, string fullName, string? phone, string? department)
+        {
+            // 1. 先建 Users 账号
+            var hasher = new PasswordHasher<User>();
+            var user = new User
+            {
+                Username = username,
+                Email = email,
+                Role = "Lecturer",
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            };
+            user.PasswordHash = hasher.HashPassword(user, password);
+            _db.Users.Add(user);
+            _db.SaveChanges();   // 保存后拿到 UserID
+
+            // 2. 再建 Lecturers 资料
+            var lecturer = new Lecturer
+            {
+                UserID = user.UserID,
+                FullName = fullName,
+                Phone = phone,
+                Department = department
+            };
+            _db.Lecturers.Add(lecturer);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }
