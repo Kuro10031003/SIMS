@@ -18,12 +18,13 @@
                     <th>Name</th>
                     <th>Credits</th>
                     <th>Semester</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model.Count == 0)
                 {
-                    <tr><td colspan="4" class="text-center text-muted">You are not assigned to any courses yet.</td></tr>
+                    <tr><td colspan="5" class="text-center text-muted">You are not assigned to any courses yet.</td></tr>
                 }
                 else
                 {
@@ -34,6 +35,9 @@
                             <td>@c.CourseName</td>
                             <td>@c.Credits</td>
                             <td>@c.Semester</td>
+                            <td>
+                                <a href="/Lecturer/CourseStudents/@c.CourseID" class="btn btn-sm btn-outline-primary">View Students</a>
+                            </td>
                         </tr>
                     }
                 }
