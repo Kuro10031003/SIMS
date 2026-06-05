@@ -1,6 +1,26 @@
 ﻿@{
-    ViewData["Title"] = "Student Home";
+    ViewData["Title"] = "Student Dashboard";
+    Layout = "_Layout";
 }
-<h1>Student Dashboard</h1>
-<p>Welcome, Student!</p>
-<a href="/Account/Logout">Logout</a>
+<div class="mb-4">
+    <h2><i class="bi bi-speedometer2"></i> Student Dashboard</h2>
+    <p class="text-muted">Welcome back, @ViewBag.StudentName</p>
+</div>
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card stat-card border-start border-4 border-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div><h6 class="text-muted mb-1">Enrolled Courses</h6><h3 class="mb-0">@ViewBag.EnrolCount</h3></div>
+                    <i class="bi bi-journal-bookmark-fill text-primary" style="font-size:2rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h5><i class="bi bi-info-circle"></i> Quick Actions</h5>
+        <a href="/Student/Courses" class="btn btn-primary mt-2">Browse & Enrol Courses</a>
+        <a href="/Student/Grades" class="btn btn-info mt-2">View My Grades</a>
+    </div></div>
